@@ -1,0 +1,55 @@
+{
+  "name": "ms-kawasaki",
+  "version": "0.1.0",
+  "scripts": {
+    "lint": "tslint src/**/*.ts",
+    "test": "tsc && karma start",
+    "postinstall": "typings install",
+    "tsc-prepublish": "tsc",
+    "tsc": "tsc",
+    "typings": "typings",
+    "prepublish": "npm run tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/david-bulte/ms-kawasaki.git"
+  },
+  "author": {
+    "name": "david-bulte",
+    "email": "david.bulte@gmail.com"
+  },
+  "keywords": [
+    "angular",
+    "angular2"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/david-bulte/ms-kawasaki.git/issues"
+  },
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "@angular/common": "^2.4.1",
+    "@angular/compiler": "^2.4.1",
+    "@angular/compiler-cli": "^2.4.1",
+    "@angular/core": "^2.4.1",
+    "@angular/forms": "^2.4.1",
+    "@angular/http": "^2.4.1",
+    "@angular/platform-browser": "^2.4.1",
+    "@angular/platform-browser-dynamic": "^2.4.1",
+    "@angular/router": "^3.4.1",
+    "@types/core-js": "^0.9.35",
+    "codelyzer": "^0.0.28",
+    "ng2-translate": "^5.0.0",
+    "rimraf": "^2.5.1",
+    "rxjs": "^5.0.0",
+    "tslint": "^3.15.1",
+    "typescript": "2.0.2",
+    "typings": "^1.0.4",
+    "zone.js": "0.7.2"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  }
+}

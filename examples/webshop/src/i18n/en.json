@@ -1,0 +1,9 @@
+{
+  "menu-item-books": "Books",
+  "menu-item-music": "Music",
+  "books-welcome": "Welcome books",
+  "books" : {
+    "the-sea-the-sea" : "The Sea, The Sea",
+    "test_with_params" : "hello {{name}}!!"
+  }
+}
