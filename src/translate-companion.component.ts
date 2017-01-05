@@ -3,7 +3,7 @@ import {OnInit, ElementRef, ViewChild, Component} from "@angular/core";
 import {Observable, BehaviorSubject} from "rxjs";
 import {Translation} from "./translation";
 @Component({
-    selector: 'translate-companion',
+    selector: 'mk-translate-companion',
     template: `
         <div class="helper" *ngIf="!config?.disabled">
           <form>

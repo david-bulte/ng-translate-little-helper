@@ -25,11 +25,11 @@ export {TranslateCompanionService, TranslateCompanionConfig} from "./src/transla
         TranslateCompanionComponent
     ]
 })
-export class TranslateCompanionModule {
+export class MsKawasakiModule {
 
     static forRoot(config: TranslateCompanionConfig): ModuleWithProviders {
         return {
-            ngModule: TranslateCompanionModule,
+            ngModule: MsKawasakiModule,
             providers: [
                 {
                     provide: TranslateCompanionConfig,

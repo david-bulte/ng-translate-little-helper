@@ -1,6 +1,5 @@
 import {BrowserModule} from "@angular/platform-browser";
 import {NgModule} from "@angular/core";
-import {FormsModule} from "@angular/forms";
 import {HttpModule, Http} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {BooksComponent} from "./books/books.component";
@@ -8,7 +7,7 @@ import {MusicComponent} from "./music/music.component";
 import {RouterModule} from "@angular/router";
 import {TranslateModule, TranslateStaticLoader, TranslateLoader} from "ng2-translate";
 import {routes} from "./app.routes";
-import {TranslateCompanionModule} from "ms-kawasaki";
+import {MsKawasakiModule} from "ms-kawasaki";
 
 @NgModule({
   declarations: [
@@ -18,7 +17,6 @@ import {TranslateCompanionModule} from "ms-kawasaki";
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
     TranslateModule.forRoot({
@@ -26,7 +24,7 @@ import {TranslateCompanionModule} from "ms-kawasaki";
       useFactory: (createTranslateLoader),
       deps: [Http]
     }),
-    TranslateCompanionModule.forRoot({nesting : 2})
+    MsKawasakiModule.forRoot({nesting : 2})
   ],
   bootstrap: [AppComponent]
 })

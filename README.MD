@@ -31,7 +31,7 @@ import {RouterModule} from "@angular/router";
 import {TranslateModule} from "ng2-translate";
 import {routes} from "./app.routes";
 // Import your library
-import {TranslateCompanionModule} from "ms-kawasaki";
+import {MsKawasakiModule} from "ms-kawasaki";
 
 @NgModule({
   declarations: [
@@ -43,7 +43,7 @@ import {TranslateCompanionModule} from "ms-kawasaki";
     RouterModule.forRoot(routes),
     TranslateModule.forRoot(),
     // Specify your library as an import
-    TranslateCompanionModule.forRoot({nesting : 2})
+    MsKawasakiModule.forRoot({nesting : 2})
   ],
   bootstrap: [AppComponent]
 })
@@ -58,12 +58,12 @@ Once your library is imported, you can include it in your HTML like so:
 <h1>
   {{title}}
 </h1>
-<translate-companion></translate-companion>
+<mk-translate-companion></mk-translate-companion>
 ```
 
 ## Configuring your library
 
-`TranslateCompanionModule.forRoot()` takes a `TranslateCompanionConfig` parameter. You can configure 
+`MsKawasakiModule.forRoot()` takes a `TranslateCompanionConfig` parameter. You can configure 
 the following:
 
 - disabled: a boolean specifying whether the companion is disabled or not. Might be handy if you want to

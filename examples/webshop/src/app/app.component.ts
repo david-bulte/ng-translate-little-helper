@@ -23,7 +23,7 @@ import {TranslateCompanionService} from "ms-kawasaki";
             <router-outlet></router-outlet>
         </div>
 
-        <translate-companion style="position: absolute; right: 0; top: 30px; height: 300px"></translate-companion>
+        <mk-translate-companion style="position: absolute; right: 0; top: 30px; height: 300px"></mk-translate-companion>
     `,
   styles: [
     `
