@@ -28,7 +28,11 @@
   },
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
-  "dependencies": {},
+  "dependencies": {
+  },
+  "peerDependencies" : {
+    "ng2-translate": "^5.0.0"
+  },
   "devDependencies": {
     "@angular/common": "^2.4.1",
     "@angular/compiler": "^2.4.1",
