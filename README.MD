@@ -1,6 +1,6 @@
-# ms-kawasaki
+# ng-translate-little-helper
 
-Ms. Kawasaki is a companion component to the [ng2-translate](https://github.com/ocombe/ng2-translate) library.
+ng-translate-little-helper is a companion component to the [ng2-translate](https://github.com/ocombe/ng2-translate) library.
 It assists you (or an editor) in composing a ng2-translate file (the json file holding all translations). 
 
 While navigating an application, each time you visit a new page, the companion lists all 
@@ -15,7 +15,7 @@ Here's a [demo](http://recordit.co/e8ToGnT7Qx).
 To install this library, run:
 
 ```bash
-$ npm install ms-kawasaki --save
+$ npm install ng-translate-little-helper --save
 ```
 
 ## Consuming your library
@@ -31,7 +31,7 @@ import {RouterModule} from "@angular/router";
 import {TranslateModule} from "ng2-translate";
 import {routes} from "./app.routes";
 // Import your library
-import {MsKawasakiModule} from "ms-kawasaki";
+import {NgTranslateLittleHelperModule} from "ng-translate-little-helper";
 
 @NgModule({
   declarations: [
@@ -42,7 +42,7 @@ import {MsKawasakiModule} from "ms-kawasaki";
     RouterModule.forRoot(routes),
     TranslateModule.forRoot(),
     // Specify your library as an import
-    MsKawasakiModule.forRoot({nesting : 2})
+    NgTranslateLittleHelperModule.forRoot({nesting : 2})
   ],
   bootstrap: [AppComponent]
 })
@@ -62,7 +62,7 @@ Once your library is imported, you can include it in your angular templates like
 
 ## Configuring your library
 
-`MsKawasakiModule.forRoot()` takes a `TranslateCompanionConfig` parameter. You can configure 
+`NgTranslateLittleHelperModule.forRoot()` takes a `TranslateCompanionConfig` parameter. You can configure 
 the following:
 
 - disabled: a boolean specifying whether the companion is disabled or not. Might be handy if you want to
@@ -102,10 +102,6 @@ method.
     });
   }
 ```
-
-## Ms. Kawasaki
-
-[with intensity](https://www.google.be/search?q=ms+kawasaki+lost+in+translation&espv=2&biw=1920&bih=960&tbm=isch&tbo=u&source=univ&sa=X&ved=0ahUKEwi-27L33qvRAhXdOlAKHZGSDFEQsAQIHA)
 
 ## License
 

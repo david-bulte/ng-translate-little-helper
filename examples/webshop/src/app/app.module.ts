@@ -7,7 +7,7 @@ import {MusicComponent} from "./music/music.component";
 import {RouterModule} from "@angular/router";
 import {TranslateModule, TranslateStaticLoader, TranslateLoader} from "ng2-translate";
 import {routes} from "./app.routes";
-import {MsKawasakiModule} from "ms-kawasaki";
+import {NgTranslateLittleHelperModule} from "ng-translate-little-helper";
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import {MsKawasakiModule} from "ms-kawasaki";
       useFactory: (createTranslateLoader),
       deps: [Http]
     }),
-    MsKawasakiModule.forRoot({nesting : 2})
+    NgTranslateLittleHelperModule.forRoot({nesting : 2})
   ],
   bootstrap: [AppComponent]
 })

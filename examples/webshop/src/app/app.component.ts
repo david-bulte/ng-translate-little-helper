@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {TranslateService} from "ng2-translate";
 import {environment} from "../environments/environment";
-import {TranslateCompanionService} from "ms-kawasaki";
+import {TranslateCompanionService} from "ng-translate-little-helper";
 
 @Component({
   selector: 'app-root',
