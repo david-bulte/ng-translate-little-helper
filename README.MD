@@ -1,5 +1,7 @@
 # ng-translate-little-helper
 
+[![npm](https://img.shields.io/npm/v/ng-translate-little-helper.svg?style=flat-square)](https://www.npmjs.com/package/ng-translate-little-helper)
+
 ng-translate-little-helper is a companion component to the [ng2-translate](https://github.com/ocombe/ng2-translate) library.
 It assists you (or an editor) in composing a ng2-translate file (the json file holding all translations). 
 
