@@ -1,9 +1,9 @@
-import {TranslateCompanionService, TranslateCompanionConfig} from "./translate-companion.service";
+import {TranslateLittleHelperService, TranslateLittleHelperConfig} from "./translate-little-helper.service";
 import {OnInit, ElementRef, ViewChild, Component} from "@angular/core";
 import {Observable, BehaviorSubject} from "rxjs";
 import {Translation} from "./translation";
 @Component({
-    selector: 'mk-translate-companion',
+    selector: 'translate-little-helper',
     template: `
         <div class="helper" *ngIf="!config?.disabled">
           <form>
@@ -67,7 +67,7 @@ import {Translation} from "./translation";
     `
     ]
 })
-export class TranslateCompanionComponent implements OnInit {
+export class TranslateLittleHelperComponent implements OnInit {
 
     keysVisible$: Observable<boolean>;
     private _filterOn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
@@ -76,12 +76,12 @@ export class TranslateCompanionComponent implements OnInit {
 
     @ViewChild("downloadEl") downloadEl: ElementRef;
 
-    constructor(private translateCompanion: TranslateCompanionService, private config: TranslateCompanionConfig) {
+    constructor(private helper: TranslateLittleHelperService, private config: TranslateLittleHelperConfig) {
     }
 
     ngOnInit() {
-        this.keysVisible$ = this.translateCompanion.keysVisible$;
-        this.translations$ = this.translateCompanion.translations$
+        this.keysVisible$ = this.helper.keysVisible$;
+        this.translations$ = this.helper.translations$
             .combineLatest(this.filterOn$)
             .map(([translations, filterOn]) => {
                 if (filterOn) {
@@ -96,11 +96,11 @@ export class TranslateCompanionComponent implements OnInit {
     }
 
     reload() {
-        this.translateCompanion.reload();
+        this.helper.reload();
     }
 
     toggleKeysVisible() {
-        this.translateCompanion.toggleKeysVisible();
+        this.helper.toggleKeysVisible();
     }
 
     toggleFilter(filterOn) {
@@ -108,15 +108,15 @@ export class TranslateCompanionComponent implements OnInit {
     }
 
     save() {
-        this.translateCompanion.save()
+        this.helper.save()
             .subscribe();
     }
 
     download() {
-        this.translateCompanion.getTranslationsAsJson(this.translateCompanion.getCurrentLang()).subscribe(translations => {
+        this.helper.getTranslationsAsJson(this.helper.getCurrentLang()).subscribe(translations => {
             let nativeElement = this.downloadEl.nativeElement;
             nativeElement.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(translations));
-            nativeElement.download = `${this.translateCompanion.getCurrentLang()}.json`;
+            nativeElement.download = `${this.helper.getCurrentLang()}.json`;
             nativeElement.click();
         });
     }

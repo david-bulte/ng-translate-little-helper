@@ -57,12 +57,12 @@ Once your library is imported, you can include it in your angular templates like
 <h1>
   {{title}}
 </h1>
-<mk-translate-companion></mk-translate-companion>
+<translate-little-helper></translate-little-helper>
 ```
 
 ## Configuring your library
 
-`NgTranslateLittleHelperModule.forRoot()` takes a `TranslateCompanionConfig` parameter. You can configure 
+`NgTranslateLittleHelperModule.forRoot()` takes a `TranslateLittleHelperConfig` parameter. You can configure 
 the following:
 
 - disabled: a boolean specifying whether the companion is disabled or not. Might be handy if you want to
@@ -89,15 +89,15 @@ key `a.nested.key`. With a nesting level of `2`, this will become:
 
 ## Methods
 
-You can listen for when the user saves his translations through the `TranslateCompanionService.onSave.subscribe`
+You can listen for when the user saves his translations through the `TranslateLittleHelperService.onSave.subscribe`
 method.
 
 ```
-  constructor(private translateCompanion:TranslateCompanionService) {
+  constructor(private helper:TranslateLittleHelperService) {
   }
 
   ngOnInit(): void {
-    this.translateCompanion.onSave.subscribe(translations => {
+    this.helper.onSave.subscribe(translations => {
       console.log('saved!!!!');
     });
   }

@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {TranslateService} from "ng2-translate";
 import {environment} from "../environments/environment";
-import {TranslateCompanionService} from "ng-translate-little-helper";
+import {TranslateLittleHelperService} from "ng-translate-little-helper";
 
 @Component({
   selector: 'app-root',
@@ -23,7 +23,7 @@ import {TranslateCompanionService} from "ng-translate-little-helper";
             <router-outlet></router-outlet>
         </div>
 
-        <mk-translate-companion style="position: absolute; right: 0; top: 30px; height: 300px"></mk-translate-companion>
+        <translate-little-helper style="position: absolute; right: 0; top: 30px; height: 300px"></translate-little-helper>
     `,
   styles: [
     `
@@ -54,12 +54,12 @@ import {TranslateCompanionService} from "ng-translate-little-helper";
 })
 export class AppComponent implements OnInit {
 
-  constructor(private translateService: TranslateService, private translateCompanion:TranslateCompanionService) {
+  constructor(private translateService: TranslateService, private helper:TranslateLittleHelperService) {
   }
 
   ngOnInit(): void {
     this.translateService.use('en');
-    this.translateCompanion.onSave.subscribe(translations => {
+    this.helper.onSave.subscribe(translations => {
       console.log('saved!!!!');
     });
   }

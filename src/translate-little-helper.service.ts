@@ -4,13 +4,13 @@ import {TranslateService, LangChangeEvent} from "ng2-translate";
 import {Router, NavigationStart} from "@angular/router";
 import {Translation} from "./translation";
 
-export class TranslateCompanionConfig {
+export class TranslateLittleHelperConfig {
   disabled?: boolean = false;
   nesting?: number = 1;
 }
 
 @Injectable()
-export class TranslateCompanionService {
+export class TranslateLittleHelperService {
 
   private _translation$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
@@ -25,7 +25,7 @@ export class TranslateCompanionService {
   onSave: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private translate: TranslateService,
-              private config:TranslateCompanionConfig,
+              private config:TranslateLittleHelperConfig,
               router?: Router) {
 
     if (config.disabled) {
