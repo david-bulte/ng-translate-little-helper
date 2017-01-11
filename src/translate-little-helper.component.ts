@@ -8,7 +8,7 @@ import {Translation} from "./translation";
         <div class="helper" *ngIf="!config?.disabled">
           <form>
             <div class="helper-block info">
-              <span>current lang = {{translateCompanion.getCurrentLang()}}</span>
+              <span>current lang = {{helper?.getCurrentLang()}}</span>
             </div>
             
             <div class="helper-block translations">        
