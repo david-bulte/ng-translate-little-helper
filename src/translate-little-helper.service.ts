@@ -51,9 +51,9 @@ export class TranslateLittleHelperService {
     changes$
       .do(() => this._translation$.next(null))
       .switchMap(() => {
-        return this._translation$.asObservable().filter(tr => tr !== null)
-          .filter(tr => tr !== null && tr.lang === this.getCurrentLang())
-          .scan((acc, translation) => [...acc, translation], [])
+        return this._translation$.asObservable()
+            .filter(tr => tr !== null && tr.lang === this.getCurrentLang())
+            .scan((acc, translation) => [...acc, translation], [])
       })
       .map(trs => {
         return unique(trs).sort((left, right) => (<string>left.key).localeCompare(right.key));
@@ -82,7 +82,6 @@ export class TranslateLittleHelperService {
           this._translation$.next({key, lang: this.translate.currentLang, value: translation});
         })
         .map(([translation, keysVisible]) => {
-          console.log('tr1', translation);
           return keysVisible ? key : translation
         });
     };
@@ -95,7 +94,6 @@ export class TranslateLittleHelperService {
       //note originalGetParsedResult
       let translation = _saved[key] ? originalGetParsedResult({[key] : _saved[key]}, key, interpolateParams) : originalInstant(key, interpolateParams);
       this._translation$.next({key, lang: this.translate.currentLang, value: translation});
-      console.log('tr2', translation);
       return this._keysVisible$.getValue() ? key : translation;
     };
 
