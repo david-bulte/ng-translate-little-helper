@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.translateService.use('en');
     this.helper.onSave.subscribe(translations => {
-      console.log('saved!!!!');
+      console.log('saved!!!!', translations);
     });
   }
 

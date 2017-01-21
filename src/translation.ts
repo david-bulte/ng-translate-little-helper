@@ -1,5 +1,7 @@
 export interface Translation {
-  key: string;
-  value: string;
-  lang: string;
+    key: string;
+    value: string;
+    lang: string;
+
+    originalValue: string;
 }

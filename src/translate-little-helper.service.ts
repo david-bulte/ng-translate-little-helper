@@ -25,7 +25,7 @@ export class TranslateLittleHelperService {
   onSave: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private translate: TranslateService,
-              private config:TranslateLittleHelperConfig,
+              private config: TranslateLittleHelperConfig,
               router?: Router) {
 
     if (config.disabled) {
@@ -37,7 +37,10 @@ export class TranslateLittleHelperService {
     let lang$ = translate.onLangChange.asObservable()
       .map((evt: LangChangeEvent) => evt.lang)
       .filter(evt => evt !== null)
-      .distinctUntilChanged();
+      .distinctUntilChanged()
+      // changing the default lang because if a translation cannot be found ng-translate falls back upon the
+      // default language
+      .do(lang => translate.setDefaultLang(lang));
 
     let changes$: Observable<any>;
     if (router) {
@@ -52,11 +55,20 @@ export class TranslateLittleHelperService {
       .do(() => this._translation$.next(null))
       .switchMap(() => {
         return this._translation$.asObservable()
-            .filter(tr => tr !== null && tr.lang === this.getCurrentLang())
-            .scan((acc, translation) => [...acc, translation], [])
+          .filter(tr => tr !== null && tr.lang === this.getCurrentLang())
+          .scan((acc, translation) => [...acc, translation], [])
       })
       .map(trs => {
         return unique(trs).sort((left, right) => (<string>left.key).localeCompare(right.key));
+      })
+      .map((trs: Translation[]) => {
+        return trs.map(tr => {
+          if (tr.key === tr.value) {
+            return Object.assign(tr, {value: undefined, originalValue: undefined});
+          } else {
+            return Object.assign(tr, {originalValue: tr.value});
+          }
+        });
       })
       .subscribe((trs: Translation[]) => {
         this._translations$.next(trs);
@@ -76,7 +88,7 @@ export class TranslateLittleHelperService {
           let _key: any = key;
           let _saved = this.saved[this.translate.currentLang] ? this.saved[this.translate.currentLang] : {};
           // return [_saved[_key] ? _saved[_key] : translation, keysVisible];
-          return [_saved[_key] ? originalGetParsedResult({[key] : _saved[key]}, key, interpolateParams) : translation, keysVisible];
+          return [_saved[_key] ? originalGetParsedResult({[key]: _saved[key]}, key, interpolateParams) : translation, keysVisible];
         })
         .do(([translation, keysVisible]) => {
           this._translation$.next({key, lang: this.translate.currentLang, value: translation});
@@ -91,8 +103,8 @@ export class TranslateLittleHelperService {
       let _key: any = key;
       let _saved = this.saved[this.translate.currentLang] ? this.saved[this.translate.currentLang] : {};
       // let translation = _saved[_key] ? _saved[_key] : originalInstant(key, interpolateParams);
-      //note originalGetParsedResult
-      let translation = _saved[key] ? originalGetParsedResult({[key] : _saved[key]}, key, interpolateParams) : originalInstant(key, interpolateParams);
+      // note originalGetParsedResult
+      let translation = _saved[key] ? originalGetParsedResult({[key]: _saved[key]}, key, interpolateParams) : originalInstant(key, interpolateParams);
       this._translation$.next({key, lang: this.translate.currentLang, value: translation});
       return this._keysVisible$.getValue() ? key : translation;
     };
@@ -100,7 +112,7 @@ export class TranslateLittleHelperService {
     this.translate.getParsedResult = (translations: any, key: any, interpolateParams?: Object): any => {
       let _saved = this.saved[this.translate.currentLang] ? this.saved[this.translate.currentLang] : {};
       // let translation = _saved[key] ? _saved[key] : originalGetParsedResult(translations, key, interpolateParams);
-      let translation = _saved[key] ? originalGetParsedResult({[key] : _saved[key]}, key, interpolateParams) : originalGetParsedResult(translations, key, interpolateParams);
+      let translation = _saved[key] ? originalGetParsedResult({[key]: _saved[key]}, key, interpolateParams) : originalGetParsedResult(translations, key, interpolateParams);
       let unresolvedTranslation = translation;
       if (interpolateParams) {
         unresolvedTranslation = _saved[key] ? _saved[key] : originalGetParsedResult(translations, key);
@@ -127,7 +139,14 @@ export class TranslateLittleHelperService {
   save() {
     return this.translations$
       .take(1)
-      .map(trs => trs.filter(tr => tr.key !== tr.value))
+      .map(trs => trs.filter(tr => {
+        return tr.value !== tr.originalValue;
+      }))
+      .do(trs => {
+        for (let tr of trs) {
+          tr.originalValue = tr.value;
+        }
+      })
       .map(trs => trs.reduce((res, tr) => {
         return Object.assign(res, {[tr.key]: tr.value});
       }, {}))
@@ -157,7 +176,7 @@ export class TranslateLittleHelperService {
 
     return this.translate.getTranslation(lang)
       .zip(Observable.of(trs))
-      .map(([trs, nested])=> {
+      .map(([trs, nested]) => {
         for (let tr of nested) {
           trs = mergeDeep(trs, tr);
         }
@@ -179,10 +198,10 @@ const unique = (arr: any[]): any[] => {
   return distinct;
 }
 
-function keyToJson(keys: string, val: string, levelsOfNesting:number = null) {
+function keyToJson(keys: string, val: string, levelsOfNesting: number = null) {
 
   if (!levelsOfNesting || levelsOfNesting <= 1) {
-    return {[keys] : val};
+    return {[keys]: val};
   }
 
   let split = keys.split('.');
@@ -195,7 +214,7 @@ function keyToJson(keys: string, val: string, levelsOfNesting:number = null) {
 
   let result = {};
   let current = result;
-  split.forEach((key, index)=> {
+  split.forEach((key, index) => {
     if (index === split.length - 1) {
       current[key] = val;
     }

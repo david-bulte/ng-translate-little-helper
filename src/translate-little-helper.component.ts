@@ -23,7 +23,7 @@ import {Translation} from "./translation";
                   <span *ngIf="(keysVisible$ | async) === true">hide keys</span>
                   <span *ngIf="(keysVisible$ | async) === false">show keys</span>
               </button>
-              <input #cb [ngModel]="filterOn$ | async" name="filterOn" type="checkbox" 
+              <input #cb [ngModel]="notTranslatedOnly$ | async" name="filterOn" type="checkbox" 
                 (ngModelChange)="toggleFilter(cb.checked)"> not translated only {{filterOn}}
               <button (click)="reload()">reload</button>
               <button (click)="save()">save</button>
@@ -70,8 +70,8 @@ import {Translation} from "./translation";
 export class TranslateLittleHelperComponent implements OnInit {
 
     keysVisible$: Observable<boolean>;
-    private _filterOn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    filterOn$: Observable<boolean> = this._filterOn.asObservable();
+    private _notTranslatedOnly: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    notTranslatedOnly$: Observable<boolean> = this._notTranslatedOnly.asObservable();
     translations$: Observable<Translation[]>;
 
     @ViewChild("downloadEl") downloadEl: ElementRef;
@@ -82,11 +82,11 @@ export class TranslateLittleHelperComponent implements OnInit {
     ngOnInit() {
         this.keysVisible$ = this.helper.keysVisible$;
         this.translations$ = this.helper.translations$
-            .combineLatest(this.filterOn$)
-            .map(([translations, filterOn]) => {
-                if (filterOn) {
+            .combineLatest(this.notTranslatedOnly$)
+            .map(([translations, notTranslatedOnly]) => {
+                if (notTranslatedOnly) {
                     return translations.filter(tr => {
-                        return tr.key === tr.value;
+                        return !tr.value;
                     });
                 } else {
                     return translations;
@@ -104,7 +104,7 @@ export class TranslateLittleHelperComponent implements OnInit {
     }
 
     toggleFilter(filterOn) {
-        this._filterOn.next(filterOn);
+        this._notTranslatedOnly.next(filterOn);
     }
 
     save() {
