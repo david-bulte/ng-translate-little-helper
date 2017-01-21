@@ -21,30 +21,44 @@ export class TranslateLittleHelperService {
   translations$: Observable<Translation[]> = this._translations$.asObservable();
 
   private saved: any = {};
+  private initialized: boolean = false;
 
   onSave: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private translate: TranslateService,
               private config: TranslateLittleHelperConfig,
-              router?: Router) {
+              private router?: Router) {
 
     if (config.disabled) {
       return;
     }
 
+    this.init();
+  }
+
+  enable() {
+    this.init();
+  }
+
+  private init() {
+
+    if (this.initialized) {
+      return;
+    }
+
     this.overrideTranslateServiceMethods();
 
-    let lang$ = translate.onLangChange.asObservable()
+    let lang$ = this.translate.onLangChange.asObservable()
       .map((evt: LangChangeEvent) => evt.lang)
       .filter(evt => evt !== null)
       .distinctUntilChanged()
       // changing the default lang because if a translation cannot be found ng-translate falls back upon the
       // default language
-      .do(lang => translate.setDefaultLang(lang));
+      .do(lang => this.translate.setDefaultLang(lang));
 
     let changes$: Observable<any>;
-    if (router) {
-      let route$ = router.events.filter(event => event instanceof NavigationStart);
+    if (this.router) {
+      let route$ = this.router.events.filter(event => event instanceof NavigationStart);
       changes$ = Observable.merge(route$, lang$);
     }
     else {
@@ -74,6 +88,7 @@ export class TranslateLittleHelperService {
         this._translations$.next(trs);
       });
 
+    this.initialized = true;
   }
 
   private overrideTranslateServiceMethods() {
@@ -81,13 +96,11 @@ export class TranslateLittleHelperService {
     let originalInstant = this.translate.instant.bind(this.translate);
     let originalGetParsedResult = this.translate.getParsedResult.bind(this.translate);
 
-    // this.translate.get = (key: string|Array<string>, interpolateParams?: Object): Observable<string|any> => {
     this.translate.get = (key: any, interpolateParams?: Object): Observable<string|any> => {
       return originalGet(key, interpolateParams).combineLatest(this.keysVisible$)
         .map(([translation, keysVisible]) => {
           let _key: any = key;
           let _saved = this.saved[this.translate.currentLang] ? this.saved[this.translate.currentLang] : {};
-          // return [_saved[_key] ? _saved[_key] : translation, keysVisible];
           return [_saved[_key] ? originalGetParsedResult({[key]: _saved[key]}, key, interpolateParams) : translation, keysVisible];
         })
         .do(([translation, keysVisible]) => {
@@ -98,12 +111,9 @@ export class TranslateLittleHelperService {
         });
     };
 
-    // this.translate.instant = (key: string | Array<string>, interpolateParams?: Object): string|any => {
     this.translate.instant = (key: any, interpolateParams?: Object): string|any => {
       let _key: any = key;
       let _saved = this.saved[this.translate.currentLang] ? this.saved[this.translate.currentLang] : {};
-      // let translation = _saved[_key] ? _saved[_key] : originalInstant(key, interpolateParams);
-      // note originalGetParsedResult
       let translation = _saved[key] ? originalGetParsedResult({[key]: _saved[key]}, key, interpolateParams) : originalInstant(key, interpolateParams);
       this._translation$.next({key, lang: this.translate.currentLang, value: translation});
       return this._keysVisible$.getValue() ? key : translation;
@@ -111,7 +121,6 @@ export class TranslateLittleHelperService {
 
     this.translate.getParsedResult = (translations: any, key: any, interpolateParams?: Object): any => {
       let _saved = this.saved[this.translate.currentLang] ? this.saved[this.translate.currentLang] : {};
-      // let translation = _saved[key] ? _saved[key] : originalGetParsedResult(translations, key, interpolateParams);
       let translation = _saved[key] ? originalGetParsedResult({[key]: _saved[key]}, key, interpolateParams) : originalGetParsedResult(translations, key, interpolateParams);
       let unresolvedTranslation = translation;
       if (interpolateParams) {
@@ -158,7 +167,7 @@ export class TranslateLittleHelperService {
         this.saved[lang] = Object.assign({}, this.saved[lang], res);
 
         this.translate.setTranslation(lang, this.saved[lang], true);
-        this.onSave.emit(res);
+        this.onSave.emit({translations: res, lang});
       })
   }
 

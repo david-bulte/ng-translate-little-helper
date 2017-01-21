@@ -99,11 +99,14 @@ method.
   }
 
   ngOnInit(): void {
-    this.helper.onSave.subscribe(translations => {
+    this.helper.onSave.subscribe(({translations, lang}) => {
       console.log('saved!!!!');
     });
   }
 ```
+
+In case the `TranslateLittleHelperService` was configured with `{disabled : true}`, you can always enable it
+via its `enable()` method.
 
 ## License
 
