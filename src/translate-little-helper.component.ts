@@ -5,7 +5,7 @@ import {Translation} from "./translation";
 @Component({
     selector: 'translate-little-helper',
     template: `
-        <div class="helper" *ngIf="!config?.disabled">
+        <div class="helper" *ngIf="helper.initialized$ | async">
           <form>
             <div class="helper-block info">
               <span>current lang = {{helper?.getCurrentLang()}}</span>
@@ -76,7 +76,7 @@ export class TranslateLittleHelperComponent implements OnInit {
 
     @ViewChild("downloadEl") downloadEl: ElementRef;
 
-    constructor(private helper: TranslateLittleHelperService, private config: TranslateLittleHelperConfig) {
+    constructor(private helper: TranslateLittleHelperService) {
     }
 
     ngOnInit() {

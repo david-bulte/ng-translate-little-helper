@@ -21,7 +21,8 @@ export class TranslateLittleHelperService {
   translations$: Observable<Translation[]> = this._translations$.asObservable();
 
   private saved: any = {};
-  private initialized: boolean = false;
+  private _initialized: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  initialized$: Observable<boolean> = this._initialized.asObservable();
 
   onSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -42,7 +43,7 @@ export class TranslateLittleHelperService {
 
   private init() {
 
-    if (this.initialized) {
+    if (this._initialized.getValue()) {
       return;
     }
 
@@ -88,7 +89,7 @@ export class TranslateLittleHelperService {
         this._translations$.next(trs);
       });
 
-    this.initialized = true;
+    this._initialized.next(true);
   }
 
   private overrideTranslateServiceMethods() {
