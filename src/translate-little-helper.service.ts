@@ -76,15 +76,15 @@ export class TranslateLittleHelperService {
       .map(trs => {
         return unique(trs).sort((left, right) => (<string>left.key).localeCompare(right.key));
       })
-      .map((trs: Translation[]) => {
-        return trs.map(tr => {
-          if (tr.key === tr.value) {
-            return Object.assign(tr, {value: undefined, originalValue: undefined});
-          } else {
-            return Object.assign(tr, {originalValue: tr.value});
-          }
-        });
-      })
+      // .map((trs: Translation[]) => {
+      //   return trs.map(tr => {
+          // if (tr.key === tr.value) {
+          //   return Object.assign(tr, {value: undefined, originalValue: undefined});
+          // } else {
+          //   return Object.assign(tr, {originalValue: tr.value});
+          // }
+      //   });
+      // })
       .subscribe((trs: Translation[]) => {
         this._translations$.next(trs);
       });
@@ -105,7 +105,8 @@ export class TranslateLittleHelperService {
           return [_saved[_key] ? originalGetParsedResult({[key]: _saved[key]}, key, interpolateParams) : translation, keysVisible];
         })
         .do(([translation, keysVisible]) => {
-          this._translation$.next({key, lang: this.translate.currentLang, value: translation});
+          let t = key !== translation ? translation : undefined;
+          this._translation$.next({key, lang: this.translate.currentLang, value: t, originalValue: t});
         })
         .map(([translation, keysVisible]) => {
           return keysVisible ? key : translation
@@ -116,7 +117,8 @@ export class TranslateLittleHelperService {
       let _key: any = key;
       let _saved = this.saved[this.translate.currentLang] ? this.saved[this.translate.currentLang] : {};
       let translation = _saved[key] ? originalGetParsedResult({[key]: _saved[key]}, key, interpolateParams) : originalInstant(key, interpolateParams);
-      this._translation$.next({key, lang: this.translate.currentLang, value: translation});
+      let t = key !== translation ? translation : undefined;
+      this._translation$.next({key, lang: this.translate.currentLang, value: t, originalValue: t});
       return this._keysVisible$.getValue() ? key : translation;
     };
 
@@ -127,7 +129,8 @@ export class TranslateLittleHelperService {
       if (interpolateParams) {
         unresolvedTranslation = _saved[key] ? _saved[key] : originalGetParsedResult(translations, key);
       }
-      this._translation$.next({key, lang: this.translate.currentLang, value: unresolvedTranslation});
+      let t = key !== translation ? translation : undefined;
+      this._translation$.next({key, lang: this.translate.currentLang, value: t, originalValue: t});
       return this._keysVisible$.getValue() ? key : translation;
     };
   }

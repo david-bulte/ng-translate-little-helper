@@ -19,6 +19,12 @@ import {Observable, BehaviorSubject} from "rxjs";
     <p>{{'books.nested.key' | translate}}</p>
     <p>{{'books.test_with_params' | translate:{name : 'success'} }}</p>
     <div [innerHTML]="'books.cover' | translate"></div>
+    
+    <button (click)="showSomeMore = true">show some more</button>
+    <div *ngIf="showSomeMore">
+        {{'here_is_some_more' | translate}}
+    </div>
+    
   `,
   styles: []
 })

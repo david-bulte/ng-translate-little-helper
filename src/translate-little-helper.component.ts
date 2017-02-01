@@ -86,7 +86,7 @@ export class TranslateLittleHelperComponent implements OnInit {
             .map(([translations, notTranslatedOnly]) => {
                 if (notTranslatedOnly) {
                     return translations.filter(tr => {
-                        return !tr.value;
+                        return !tr.value || tr.value !== tr.originalValue;
                     });
                 } else {
                     return translations;
