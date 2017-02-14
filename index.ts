@@ -1,10 +1,8 @@
 import {NgModule, ModuleWithProviders} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {TranslateLittleHelperComponent} from "./src/translate-little-helper.component";
 import {TranslateLittleHelperService, TranslateLittleHelperConfig} from "./src/translate-little-helper.service";
-import {Router} from "@angular/router";
-import {TranslateService} from "ng2-translate";
+import {CommonModule} from "@angular/common";
 
 export {Translation} from "./src/translation";
 export {TranslateLittleHelperService, TranslateLittleHelperConfig} from "./src/translate-little-helper.service";
@@ -15,7 +13,7 @@ export {TranslateLittleHelperService, TranslateLittleHelperConfig} from "./src/t
         TranslateLittleHelperComponent
     ],
     imports: [
-        BrowserModule,
+        CommonModule,
         FormsModule
     ],
     entryComponents: [
