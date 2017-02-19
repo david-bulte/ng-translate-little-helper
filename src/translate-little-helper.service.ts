@@ -129,7 +129,7 @@ export class TranslateLittleHelperService {
       if (interpolateParams) {
         unresolvedTranslation = _saved[key] ? _saved[key] : originalGetParsedResult(translations, key);
       }
-      let t = key !== translation ? translation : undefined;
+      let t = key !== translation ? unresolvedTranslation : undefined;
       this._translation$.next({key, lang: this.translate.currentLang, value: t, originalValue: t});
       return this._keysVisible$.getValue() ? key : translation;
     };
