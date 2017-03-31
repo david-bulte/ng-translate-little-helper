@@ -1,6 +1,6 @@
 {
   "name": "ng-translate-little-helper",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "scripts": {
     "lint": "tslint src/**/*.ts",
     "test": "tsc && karma start",
@@ -19,8 +19,7 @@
     "email": "david.bulte@gmail.com"
   },
   "keywords": [
-    "angular",
-    "angular2"
+    "angular"
   ],
   "license": "MIT",
   "bugs": {

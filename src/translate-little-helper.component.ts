@@ -76,7 +76,7 @@ export class TranslateLittleHelperComponent implements OnInit {
 
     @ViewChild("downloadEl") downloadEl: ElementRef;
 
-    constructor(private helper: TranslateLittleHelperService) {
+    constructor(public helper: TranslateLittleHelperService) {
     }
 
     ngOnInit() {
